@@ -118,6 +118,18 @@ def main():
     # combine all from Data to one merged file
     combine_files(basefile, directory).to_csv(savefile)
     print("Saved file to {}/{}".format(directory, savefile))
+    
+    # format the times again
+    mainfile = pd.read_csv(savefile)
+    
+    # example of time 2020-12-31T21:00:00+0000
+    mainfile['start_time'] = pd.to_datetime(mainfile['start_time'], 
+        format='%Y-%m-%dT%H:%M:%S%z')
+    mainfile = mainfile.set_index('start_time')
+    mainfile.to_csv(savefile)
+    print("Reformatted time")
+    
+    print("All done.")
 
 if __name__ == "__main__":
     main()
